@@ -2,6 +2,15 @@ const corp = document.querySelector("body");
 const generateBtn = document.getElementById("generateBtn")
 const menu = document.getElementsByClassName("menu")[0];
 
+class colorSave {
+    date:Date;
+    color:string;
+    constructor(savedColor:string){
+        this.date = new Date();
+        this.color = savedColor;
+    }
+}
+
 let time = setInterval(()=>{
     let color:string = colorGenerator();
     if(corp != undefined){
@@ -24,10 +33,41 @@ function colorGenerator():string{
     return res;
 }
 
+function createLineColor(color:colorSave){
+    let savedBar = document.getElementsByClassName("storageDiv")[0];
+
+    let newColorHexa:HTMLElement = document.createElement("p");
+    let newColorBox:HTMLElement = document.createElement("div");
+    let newColorDate:HTMLElement = document.createElement("p");
+    let newContentBox:HTMLElement = document.createElement("div")
+    let newColorContainer:HTMLElement = document.createElement("div");
+
+    newColorHexa.textContent = "Color code : "+color.color;
+    newColorBox.id = "lineboxColor";
+    newColorDate.textContent = "Saved date : "+color.date.getDate().toString()+" / "+(color.date.getMonth()+1).toString()+" / "+color.date.getFullYear().toString();
+    newColorBox.style.backgroundColor = color.color;
+
+    newColorContainer.className = "colorLine";
+    newContentBox.className = "lineContent";
+    newContentBox.appendChild(newColorHexa);
+    newContentBox.appendChild(newColorDate);
+    newColorContainer.appendChild(newColorBox);
+    newColorContainer.appendChild(newContentBox);
+
+    savedBar.appendChild(newColorContainer);
+}
+
 generateBtn?.addEventListener("click",()=>{
+    //let colorStorage = localStorage;
     if(corp != undefined && generateBtn != undefined && menu != undefined){
         let color:string = colorGenerator();
         generateBtn.style.display = "None";
+
+        let saveColorHisto:HTMLElement = document.createElement("div");
+        let savetitle:HTMLElement = document.createElement("h2");
+        saveColorHisto.className = "storageDiv";
+        savetitle.textContent = "Saved colors"
+        saveColorHisto.appendChild(savetitle);
 
         let content:HTMLElement = document.createElement("div");
         let textField:HTMLInputElement = document.createElement("input");
@@ -59,6 +99,7 @@ generateBtn?.addEventListener("click",()=>{
         menu.insertBefore(content,generateBtn);
         menu.appendChild(divBtn);
         corp.style.backgroundColor = color;
+        corp.appendChild(saveColorHisto);
         clearInterval(time);
 
         changeColorBtn.addEventListener("click",()=>{
@@ -67,8 +108,17 @@ generateBtn?.addEventListener("click",()=>{
             divColor.style.backgroundColor = newColor;
             corp.style.backgroundColor = newColor;
         });
+
+        let tabColor:Array<colorSave> = []; 
+
+        saveBtn.addEventListener("click",()=>{
+            saveColorHisto.style.display = "flex";
+            let newC = new colorSave(textField.value);
+            tabColor.push(newC);
+            if(tabColor != undefined){
+               createLineColor(newC);
+            }
+        });
         
     }
-
-
 });
