@@ -90,8 +90,11 @@ generateBtn === null || generateBtn === void 0 ? void 0 : generateBtn.addEventLi
         saveBtn.addEventListener("click", () => {
             saveColorHisto.style.display = "flex";
             let newC = new colorSave(textField.value);
-            tabColor.push(newC);
-            if (tabColor != undefined) {
+            if (tabColor.includes(newC)) {
+                console.log("erreur");
+            }
+            else {
+                tabColor.push(newC);
                 createLineColor(newC);
             }
         });

@@ -24,7 +24,7 @@ function randomNumber(maxvalue:number):number{
 }
 
 function colorGenerator():string{
-    let firstNb : number = randomNumber(255);
+    let firstNb:number = randomNumber(255);
     let secondeNb:number = randomNumber(255);
     let thirdNb:number = randomNumber(255);
 
@@ -114,9 +114,12 @@ generateBtn?.addEventListener("click",()=>{
         saveBtn.addEventListener("click",()=>{
             saveColorHisto.style.display = "flex";
             let newC = new colorSave(textField.value);
-            tabColor.push(newC);
-            if(tabColor != undefined){
-               createLineColor(newC);
+            if(tabColor.includes(newC)){
+                console.log("erreur");
+            }
+            else{
+                tabColor.push(newC);
+                createLineColor(newC);
             }
         });
         
